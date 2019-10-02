@@ -1,0 +1,40 @@
+Implement a simple calculator which evaluates arithmetic expressions given as a String. The expression should only consists of numbers 0 to 9, parenthesis, and the binary and unary operators + and -. White spaces are ignored. Implement a recursive descent parser for reading in the String and calculating the output.
+
+The syntax is given as the following EBNF:
+
+expression = term, [ "+" | "-" , term ] ; 
+term = "(", term, ")" | "0" | "1" | ... | "9" ;
+The following strings are valid: "1", "((2))", "2 + 3", "(4) - 5 ". If you are working in Java, you may want to make use of the StreamTokenizer class.
+
+As some hints, build a class to implement the following
+
+public class SimpleCalculator {
+  private StreamTokenizer st;
+  public SimpleCalculator() {
+    super();
+  }
+
+  /**
+   * Create the scanner for the string, setting the ordinary
+   * characters to be the digits, brackets, + and -
+   */
+   private void createScanner(String s) {
+   }
+
+  /**
+   * Create the scanner, and pull tokens deciding what to do based on
+   * character is found
+   */
+  public int parseExpression(String s) throws SyntaxException, IOException {
+  }
+
+  public int parseTerm() throws SyntaxException, IOException {
+  }
+
+  public static void main(String args[]) throws IOException, SyntaxException {
+     SimpleCalculator sc = new SimpleCalculator();
+     // Loop, reading the string from standard input
+     // and calling parseExpression
+  }
+}
+ 
