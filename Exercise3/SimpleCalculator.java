@@ -19,8 +19,8 @@ public class SimpleCalculator {
     }
 
     private void createScanner(String s) {
-        this.st = new StreamTokenizer(new StringReader(s));
-        st.ordinaryChar('(');
+        this.st = new StreamTokenizer(new StringReader(s)); //yeni streamTokenizer objesi oluşturuluyor.
+        st.ordinaryChar('('); //OrdinaryChar methodu bu karakterlere gelince durmasını token'ı oluşturmasını söylüyor.
         st.ordinaryChar(')');
         st.ordinaryChar('+');
         st.ordinaryChar('-');
@@ -32,9 +32,9 @@ public class SimpleCalculator {
         st.nextToken();
         int t1= parseTerm();
         int value=0;
-        st.nextToken();
-        if(st.ttype == st.TT_EOF){
-            return t1;
+        st.nextToken(); //oluşturulan tokenlerden bir sonrakine geçmeye yarıyor.
+        if(st.ttype == st.TT_EOF){ //TT_EOF line ın sonuna gelmişsin demek. 
+            return t1; // Yani sadece 2 ya da ((4)) gibi şeyler işlemsiz sayılar yazdıysan direk cevabı return
         }
         if(st.ttype == '+'){
             st.nextToken();
@@ -47,22 +47,22 @@ public class SimpleCalculator {
         else{
             throw new SyntaxException("We were expecting + or - ");
         }
-        st.nextToken();
+        st.nextToken(); // işlemi yaptık bundan sonra herhangi bir şey geliyorsa sorun var. 
         if(st.ttype != st.TT_EOF){
             throw new SyntaxException("Unexpected characters at the end of the line");
         }
         return value;
     }
 
-    public int parseTerm() throws SyntaxException, IOException {
-        if(st.ttype == '('){
+    public int parseTerm() throws SyntaxException, IOException { //recursive bir mehtod
+        if(st.ttype == '('){ //eğer paranteze eşitse token'ı bir arttıracak ve yine parantez mi değil mi diye check edicek.
             st.nextToken();
-            int val = parseTerm();
+            int val = parseTerm(); // recursion
             st.nextToken();
-            if(st.ttype == ')'){
+            if(st.ttype == ')'){ //parantez buldukça recursive fonksiyonlar parantez döndürücek.
                 return val;
             } else throw new SyntaxException("Expected ')'");
-        } else if(st.ttype >= '0' && st.ttype <= '9'){
+        } else if(st.ttype >= '0' && st.ttype <= '9'){ //ardından sayıyı bulunca bu sefer st.nextToken diyerek ')' parantezi sorguluyor 
             return st.ttype -'0';
         }else throw new SyntaxException("Expected a single digit number or a '('");
     }
