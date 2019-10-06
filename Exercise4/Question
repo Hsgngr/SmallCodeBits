@@ -1,0 +1,71 @@
+Introduction to Writing Search Code
+Note that this is written from the point of view of a Java programmer. If you're attempting this exercise in some other language, you should be able to translate the Java specific parts to your language of choice.
+
+The Tower Problem
+In this problem you are given a collection of wooden blocks of various sizes (heights) and are asked to choose some or all of the blocks to build a tower whose total height is exactly some specified height.
+
+For example, suppose the initial collection of blocks consists of blocks with heights 2, 3, 1, 2, 5, 4, and 10. Suppose the goal is to build a tower of height 11. One solution is to choose blocks with heights 2, 3, 5, and 1, leaving the blocks with heights 2, 4, and 10 as unchosen (or still available).
+
+Another solution is to choose the blocks with heights 10 and 1, leaving the blocks with heights 2, 3, 2, 5, and 4 as unchosen (available).
+
+In this lab class you will write search code to solve this problem
+
+Representing Blocks
+Write a class Block to represent blocks. This is a very simple class which should have an integer field for the height, and appropriate constructor and getHeight() methods. You may find it useful to give it a toString() method too.
+
+Representing States
+At any point in trying to choose which block to add to a (partially built) tower there are blocks already in the tower and the remaining blocks from which we can choose the next one to add. Therefore, for this problem a state (configuration) will consist of two sets of blocks:
+
+The blocks already chosen i.e. those making up the tower so far.
+The blocks that are still available to add to the tower i.e. those that have not been chosen.
+Write a class TowerState which will represent such a configuration of blocks. There should be two fields:
+
+private ArrayList< Block> chosen and
+private ArrayList< Block> available
+which represent the blocks chosen so far, and the ones still available.
+
+This class should have:
+
+a constructor which takes two arraylists of blocks as parameters and assigns them to the fields.
+
+a method with signature public int getHeight() which returns the total height of thetower i.e. the sum of the blocks in the chosen list.
+
+a public String toString() method which will produce for example a string:
+
+5 1 | 2 3 4
+
+for a TowerState object in which the chosen list contains blocks of size 5 and 1, and the available list contains blocks of sizes 2, 3, and 4.
+
+a method with signature public void chooseBlock(Block b) which takes a Block object as parameter, and removes that block from the available list and adds it to the chosen list. Note that this method actually changes the state of the TowerState object itself - it does not produce a modified copy of the original state.
+
+a method with signature public ArrayList< TowerState> getDaughters() which produces a list of new TowerState objects (one for each block in the available list) corresponding to picking a block from the available list and adding it to the tower. So for example, from the state:
+
+5 1 | 2 3 4
+
+this method should return an ArrayList containg the TowerStates:
+
+5 1 2 | 3 4
+5 1 3 | 2 4
+5 1 4 | 2 3
+
+Method chooseBlock is useful for this. However there is a complication! If in state 5 1 | 2 3 4 we choose the block of size 2 using the chooseBlock method then we will modify the state to be 5 1 2 | 3 4. However if we now choose the block of size 3 we will get state 5 1 2 3 | 4 because as noted above chooseBlockmodifies the state rather than making a copy and modifying that.
+Therefore the getDaughters() method must make a copy of the current object (the object itself) with new copied arrayLists for the chosen and available fields of the new object. The new object can then safely be modified by the chooseBlock method. A new copy of the current state must be made for each block that is in the available list.
+
+If you do not understand this please ask the tutor in the lab class, or ask in PAL sessions, or both!
+
+Therefore, because of the above, you will need a method with signature public TowerState copy() in order to do the copying.
+Writing the Search Code Itself
+To do this write a class class called TowerSearch. This class should have the following fields:
+
+a private TowerState start field to hold the starting state for the search.
+
+a private int goal field to store the desired final height of the tower.
+As well as these fields the class should have the following methods:
+
+a constructor method which takes 2 parameters - a int[] object representing the sizes of all the blocks, and an integer for the goal height. The constructor should use the information in th array of integers to construct an initial TowerState object (with Blocks of the given sizes in the available list, and an empty chosen list). This should be stored in the start field, and the goal height should be stored in the goal field.
+
+a method with signature public TowerState depthFirstSearch() which does a depth-first search starting from the state stored in the start field until it finds (and returns) a state corresponding to a tower with height equal to the goal. To do this, begin by studying slide 5 in the lecture on Search Algorithms. This is an overview of how agenda-based search algorithms work in general. You will need to provide a Java implementation of this pseudocode, bearing in mind that to get depth-first search this code should always take the state off the front of the toDo list, and add new states to the front as well. You can use an ArrayList for the toDo list, but you may prefer to use a Stack (See the Java APIs). In particular you can test for empty using the Stack class's isEmpty() method, and put a new item on using push(...), and take an item off using pop(). For the alreadySeen list you could use an ArrayList or a HashSet.
+
+a method to find and print a solution. This will call the depthFirstSearch() method, and then print the result. This method is useful for testing your code.
+If you have managed all that try adding a breadthFirstSearch() method.
+
