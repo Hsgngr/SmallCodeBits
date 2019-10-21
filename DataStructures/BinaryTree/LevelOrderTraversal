@@ -1,0 +1,69 @@
+import java.util.*;
+
+public class Solution {
+    public static List<List<Character>> levelOrder(TreeNode root) {
+        if (root == null) return Collections.emptyList();
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Character>> wrapList = new LinkedList<List<Character>>();
+        queue.offer(root);
+
+
+        while (!queue.isEmpty()) {
+            int LevelNum = queue.size();
+            List<Character> subList = new LinkedList<Character>();
+            for (int i = 0; i < LevelNum; i++) { //Leveli her ekledigi yeni child icin aliyor. bir sonraki el bunlar parent olucak.
+                if (queue.peek().left != null) queue.offer(queue.peek().left);
+                if (queue.peek().right != null) queue.offer(queue.peek().right);
+                subList.add(queue.poll().val); //Bu kisim parentlarin tum childlari bitene kadar calisiyor hepsini subListe ekliyor. Sonrasinda bitirdigi parenti queuedan cikartiyor.
+            }
+            wrapList.add(subList);
+        }
+        return wrapList;
+    }
+}
+
+/* ==================================================================
+Bir tree yaratiyoruz
+public class Main {
+
+    public static void main(String[] args) {
+        // write your code here
+        TreeNode a = new TreeNode('A');
+        TreeNode b = new TreeNode('B');
+        TreeNode c = new TreeNode('C');
+        TreeNode d = new TreeNode('D');
+        TreeNode e = new TreeNode('E');
+        TreeNode f = new TreeNode('F');
+        TreeNode g = new TreeNode('G');
+        TreeNode h = new TreeNode('H');
+        TreeNode i = new TreeNode('I');
+
+        f.left=b;
+        f.right=g;
+        b.left =a;
+        b.right=d;
+        d.left=c;
+        d.right=e;
+        g.right=i;
+        i.left=h;
+
+        System.out.println(Solution.levelOrder(f));
+
+    }
+}*/
+
+/*=======================================================================
+public class TreeNode {
+    Character val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(char x) {
+        val = x;
+    }
+
+    @Override
+    public String toString() {
+        return this.val.toString();
+    }
+}*/
+
