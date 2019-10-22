@@ -1,9 +1,10 @@
-/*
-public class Main {
+//Aşırı elegant bir çözüm beynim yandı helal olsun.
+//https://leetcode.com/problems/symmetric-tree/solution/
+/*public class Main {
 
     public static void main(String[] args) {
-	// write your code here
-        TreeNode a = new TreeNode(1);
+        // write your code here
+*//*        TreeNode a = new TreeNode(1);
         TreeNode b = new TreeNode(2);
         TreeNode c = new TreeNode(2);
         TreeNode d = new TreeNode(3);
@@ -18,12 +19,22 @@ public class Main {
         b.left=d;
         b.right=e;
         c.left=f;
-        c.right=g;
-        
-        System.out.println(Solution.isSymmetric(f));
+        c.right=g;*//*
+        TreeNode x = new TreeNode(1);
+        TreeNode y = new TreeNode(2);
+        TreeNode z = new TreeNode(2);
+        TreeNode t = new TreeNode(3);
+        TreeNode q = new TreeNode(3);
+
+        x.left=y;
+        x.right=z;
+        y.right=t;
+        z.right=q;
+
+
+        System.out.println(Solution.isSymmetric(x));
     }
-}================================================================*/
-/*
+}======================================================================================0*/
 
 import java.util.*;
 
@@ -32,37 +43,24 @@ public class Solution {
     }
 
     public static boolean isSymmetric(TreeNode root) {
-        if (root == null) return false;
-        boolean answer = false;
-        Queue<TreeNode> queue = new LinkedList<TreeNode>();
-        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            int LevelNum = queue.size();
-            List<Integer> subList = new LinkedList<Integer>();
-            for (int i = 0; i < LevelNum; i++) { //Leveli her ekledigi yeni child icin aliyor. bir sonraki el bunlar parent olucak.
-                if (queue.peek().left != null) queue.offer(queue.peek().left);
-                if (queue.peek().right != null) queue.offer(queue.peek().right);
-                subList.add(queue.poll().val); //Bu kisim parentlarin tum childlari bitene kadar calisiyor hepsini subListe ekliyor. Sonrasinda bitirdigi parenti queuedan cikartiyor.
-            }
-            if (answer == false || checkSymmetry(subList, 0) == false) {
-                answer = false;
-            } else answer = true;
-
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        q.add(root);
+        while (!q.isEmpty()) {
+            TreeNode t1 = q.poll();
+            TreeNode t2 = q.poll();
+            if (t1 == null && t2 == null) continue;
+            if (t1 == null || t2 == null) return false;
+            if (t1.val != t2.val) return false;
+            q.add(t1.left);
+            q.add(t2.right);
+            q.add(t1.right);
+            q.add(t2.left);
         }
-        return false;
-    }
-
-    private static boolean  checkSymmetry(List<Integer> subList, int i) {
-        if (subList.size() == 1) return true;
-        if (subList.size() == 2 && subList.get(i) == subList.get(subList.size()-1-i)) return true;
-        if (i == subList.size()-1-i && subList.get(i) == subList.size() - 1 - i) return true;
-        if (subList.get(i) == subList.size() && i<subList.size()/2 ) return checkSymmetry(subList,i+1);
-        return false;
+        return true;
     }
 }
-=============================================================================================*/
-/*
+/*=====================================================================================
 public class TreeNode {
     int val;
     TreeNode left;
@@ -70,4 +68,10 @@ public class TreeNode {
 
     public TreeNode(int val) {
         this.val = val;
-    }*/
+    }
+
+    @Override
+    public String toString() {
+        return "" +this.val;
+    }
+}*/
