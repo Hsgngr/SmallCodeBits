@@ -1,0 +1,93 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
+
+public class Solution {
+    public Solution() {
+    }
+
+    public static List<Character> postOrderTraversal(TreeNode root) {
+        if (root == null) return Collections.emptyList();
+        Stack<TreeNode> stack = new Stack<>();
+        List<Character> order = new ArrayList<>();
+        TreeNode prevNode = null;
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode currentNode = stack.peek();
+            /* go down the tree in search of a leaf an if so process it
+            and pop stack otherwise move down */
+            if (prevNode == null || prevNode.left == currentNode || prevNode.right == currentNode) {
+                if (currentNode.left != null) {
+                    stack.push(currentNode.left);
+                } else if (currentNode.right != null) {
+                    stack.push(currentNode.right);
+                } else {
+                    stack.pop();
+                    order.add(currentNode.val);
+                }
+                 /* go up the tree from left node, if the child is right
+                   push it onto stack otherwise process parent and pop
+                   stack */
+            } else if (currentNode.left == prevNode) {
+                if (currentNode.right != null) {
+                    stack.push(currentNode.right);
+                } else {
+                    stack.pop();
+                    order.add(currentNode.val);
+                }
+            } else if (currentNode.right == prevNode) {
+                stack.pop();
+                order.add(currentNode.val);
+            }
+            prevNode = currentNode;
+        }
+        return order;
+    }
+}
+
+/=====================================================================================
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        TreeNode a = new TreeNode('A');
+        TreeNode b = new TreeNode('B');
+        TreeNode c = new TreeNode('C');
+        TreeNode d = new TreeNode('D');
+        TreeNode e = new TreeNode('E');
+        TreeNode f = new TreeNode('F');
+        TreeNode g = new TreeNode('G');
+        TreeNode h = new TreeNode('H');
+        TreeNode i = new TreeNode('I');
+
+        f.left=b;
+        f.right=g;
+        b.left =a;
+        b.right=d;
+        d.left=c;
+        d.right=e;
+        g.right=i;
+        i.left=h;
+
+        System.out.println(Solution.postOrderTraversal(f));
+
+    }
+}
+==========================================================================================    */
+/*
+public class TreeNode {
+   // int val;
+    Character val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(Character x) {
+        val = x;
+    }
+    @Override
+    public String toString() {
+        return this.val.toString();
+    }
+}
+*/
+
