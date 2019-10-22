@@ -1,0 +1,73 @@
+/*
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        TreeNode a = new TreeNode(1);
+        TreeNode b = new TreeNode(2);
+        TreeNode c = new TreeNode(2);
+        TreeNode d = new TreeNode(3);
+        TreeNode e = new TreeNode(4);
+        TreeNode f = new TreeNode(4);
+        TreeNode g = new TreeNode(3);
+        TreeNode h = new TreeNode(8);
+        TreeNode i = new TreeNode(9);
+
+        a.left=b;
+        a.right=c;
+        b.left=d;
+        b.right=e;
+        c.left=f;
+        c.right=g;
+        
+        System.out.println(Solution.isSymmetric(f));
+    }
+}================================================================*/
+/*
+
+import java.util.*;
+
+public class Solution {
+    public Solution() {
+    }
+
+    public static boolean isSymmetric(TreeNode root) {
+        if (root == null) return false;
+        boolean answer = false;
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        List<List<Integer>> wrapList = new LinkedList<List<Integer>>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int LevelNum = queue.size();
+            List<Integer> subList = new LinkedList<Integer>();
+            for (int i = 0; i < LevelNum; i++) { //Leveli her ekledigi yeni child icin aliyor. bir sonraki el bunlar parent olucak.
+                if (queue.peek().left != null) queue.offer(queue.peek().left);
+                if (queue.peek().right != null) queue.offer(queue.peek().right);
+                subList.add(queue.poll().val); //Bu kisim parentlarin tum childlari bitene kadar calisiyor hepsini subListe ekliyor. Sonrasinda bitirdigi parenti queuedan cikartiyor.
+            }
+            if (answer == false || checkSymmetry(subList, 0) == false) {
+                answer = false;
+            } else answer = true;
+
+        }
+        return false;
+    }
+
+    private static boolean  checkSymmetry(List<Integer> subList, int i) {
+        if (subList.size() == 1) return true;
+        if (subList.size() == 2 && subList.get(i) == subList.get(subList.size()-1-i)) return true;
+        if (i == subList.size()-1-i && subList.get(i) == subList.size() - 1 - i) return true;
+        if (subList.get(i) == subList.size() && i<subList.size()/2 ) return checkSymmetry(subList,i+1);
+        return false;
+    }
+}
+=============================================================================================*/
+/*
+public class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    public TreeNode(int val) {
+        this.val = val;
+    }*/
