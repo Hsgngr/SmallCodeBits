@@ -1,0 +1,137 @@
+//Ben bu kadar yapmaya çalışıyim adam tek satırda işi bitirsin, adaletini sikiyim dünya
+
+//You simply check if current node (starting with root) is a leaf node and sum is equal its value.
+//If not, you just check left or right with the decremented sum. If one of them returns true, it has a path.
+
+public boolean hasPathSum(TreeNode root, int sum) {    
+  if (root == null)
+     return false;
+        
+  if (root.left == null && root.right == null && root.val == sum) // Leaf check
+     return true;
+        
+  return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+}
+
+
+
+
+
+
+//https://leetcode.com/problems/path-sum/
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
+
+public class Solution {
+    public Solution() {
+    }
+    public static boolean hasPathSum(TreeNode root, int sum) {
+List<Integer> array=postOrderTraversal(root);
+if(array.isEmpty())return false;
+if(root.left==null && root.right==null && root.val ==sum)return true;
+if(array.contains(root.val))array.remove(Integer.valueOf(root.val));
+if(array.contains(sum)) return true;
+else return false;
+    }
+    
+    
+    public static List<Integer> postOrderTraversal(TreeNode root) {
+        if (root == null) return Collections.emptyList();
+        Stack<TreeNode> stack = new Stack<>();
+        List<Integer> order = new ArrayList<>();
+        TreeNode prevNode = null;
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode currentNode = stack.peek();
+            /* go down the tree in search of a leaf an if so process it
+            and pop stack otherwise move down */
+            if (prevNode == null || prevNode.left == currentNode || prevNode.right == currentNode) {
+                if (currentNode.left != null) {
+                    stack.push(currentNode.left);
+                } else if (currentNode.right != null) {
+                    stack.push(currentNode.right);
+                } else {
+                    int sum=0;
+                    for(TreeNode node : stack){
+                        sum=sum +node.val;
+                    }
+                    if(stack.peek().right ==null && stack.peek().left ==null){
+                        order.add(sum);
+                        stack.pop();
+                    }
+
+                }
+                 /* go up the tree from left node, if the child is right
+                   push it onto stack otherwise process parent and pop
+                   stack */
+            } else if (currentNode.left == prevNode) {
+                if (currentNode.right != null) {
+                    stack.push(currentNode.right);
+                } else {
+                    stack.pop();
+                    //order.add(currentNode.val);
+                }
+            } else if (currentNode.right == prevNode) {
+                stack.pop();
+               // order.add(currentNode.val);
+            }
+            prevNode = currentNode;
+        }
+        return order;
+    }
+}
+/*============================================================================================
+public class Main {
+
+    public static void main(String[] args) {
+        // write your code here
+        TreeNode a = new TreeNode(5);
+        TreeNode b = new TreeNode(4);
+        TreeNode c = new TreeNode(8);
+        TreeNode d = new TreeNode(11);
+        TreeNode e = new TreeNode(13);
+        TreeNode f = new TreeNode(4);
+        TreeNode g = new TreeNode(7);
+        TreeNode h = new TreeNode(2);
+        TreeNode k = new TreeNode(1);
+
+
+
+        a.left=b;
+        a.right=c;
+        b.left=d;
+        c.left=e;
+        c.right=f;
+        d.left=g;
+        d.right=h;
+        f.right=k;
+
+      *//*  TreeNode a = new TreeNode(1);
+        TreeNode b = new TreeNode(2);
+        TreeNode c = new TreeNode(3);
+        TreeNode d = new TreeNode(4);
+        TreeNode e = new TreeNode(5);
+
+        a.right=b;
+        b.right=c;
+        c.right=d;
+        d.right=e;
+*//*
+
+       // System.out.println(Solution.hasPathSum(a,3));
+
+        System.out.println(Solution.hasPathSum(a,22));
+        //System.out.println(Solution.hasPathSum(null,1));
+    }
+}======================================================================================*/
