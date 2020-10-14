@@ -1,0 +1,29 @@
+#Question: https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
+
+#Populating Next Right Pointers in Each Node
+#Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+#Initially, all next pointers are set to NULL.
+
+class Solution {
+   public Node connect(Node root) {
+        if (root == null) return null;
+
+        Node cur = root; #Start from the root node
+        Node nextLeftMost = null;
+
+        while (cur.left != null) {
+            nextLeftMost = cur.left; // Saving the start of next level
+
+            while (cur != null) {
+                cur.left.next = cur.right;
+                cur.right.next = cur.next == null ? null : cur.next.left;
+                cur = cur.next;
+            }
+            cur = nextLeftMost;
+        }
+        return root;
+    }
+}
+
+# Thanks to the answer https://leetcode.com/explore/learn/card/data-structure-tree/133/conclusion/994/discuss/37603/Java-solution-traversing-by-level-without-extra-space
+#The algorithms aim can be examine with this image better. https://assets.leetcode.com/uploads/2019/02/14/116_sample.png
