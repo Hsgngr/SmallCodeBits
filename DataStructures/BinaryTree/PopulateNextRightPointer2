@@ -1,0 +1,27 @@
+#Question: https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
+#The difference from the first question is these trees are not perfect.
+
+#Solution: https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/discuss/37811/Simple-solution-using-constant-space
+#I struggled to understand in first 2-3 times but here it is.
+#We create tempChild and we point currentChild to tempChild.
+#When we have any left or right node connected to root node that time, we are pointing first node as tempChild.next (since we do currentChild.next =root.left || =root.right)
+#Then we change the currentChild to other nodes.If the node has left and right nodes we always take the left one and tempChild point to it. When that level finishes
+#We change the root as the first child in the lower level with "root = tempChild.next"
+
+class Solution {
+       public Node connect(Node root) {
+        Node head = root;
+        while (root != null) {
+            Node tempChild = new Node(0);
+            Node currentChild = tempChild;
+
+            while (root != null) {
+            if(root.left != null){ currentChild.next = root.left; currentChild = currentChild.next; }
+            if(root.right !=null){ currentChild.next = root.right; currentChild = currentChild.next;}
+            root = root.next;
+            }
+            root = tempChild.next;
+        }
+        return head;
+    }
+}
